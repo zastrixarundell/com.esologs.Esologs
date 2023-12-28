@@ -15,37 +15,34 @@ cleanup:
   - '*.a'
   - '*.la'
 modules:
+  - name: esologs
+    buildsystem: simple
+    build-commands: 
+      - chmod +x esologs.appimage
+      - ./esologs.appimage --appimage-extract &> /dev/null
+      - rm -rf esologs.appimage
+
+      - mkdir -p ${FLATPAK_DEST}/bin
+      - cp -r squashfs-root/* ${FLATPAK_DEST}/bin/
+      # - chmod 4755 ${FLATPAK_DEST}/bin/chrome-sandbox
+    sources:
+      - type: file
+        url: https://github.com/RPGLogs/Uploaders-esologs/releases/download/v8.2.2/esologs-v8.2.2.AppImage
+        sha256: 487d5c67562de9e9df8cd0383234a74adb709b39a6149e229d38e027ef94a18d
+        size: 100165950
+        dest-filename: esologs.appimage
   - name: metainfo
     buildsystem: simple
     build-commands:
-      - install -Dm755 apply-extra                ${FLATPAK_DEST}/bin/apply_extra
       - install -Dm755 esologs.sh                 ${FLATPAK_DEST}/bin/esologs.sh
       - install -Dm644 ${FLATPAK_ID}.png          ${FLATPAK_DEST}/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png
       - install -Dm644 ${FLATPAK_ID}.desktop      ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
     sources:
-      - type: extra-data
-        filename: appimage
-        url: https://github.com/RPGLogs/Uploaders-esologs/releases/download/v8.2.2/esologs-v8.2.2.AppImage
-        sha256: 487d5c67562de9e9df8cd0383234a74adb709b39a6149e229d38e027ef94a18d
-      - type: script
-        dest-filename: apply-extra
-        commands:
-          - unappimage appimage &>/dev/null
-          - rm -f appimage
-          - rm -f squashfs-root/{.DirIcon,AppRun,esologs.png}
-          - rm -f squashfs-root/{libEGL.so,libGLESv2.so,libvulkan.so.1}
-          - rm -rf squashfs-root/usr
-          - mv squashfs-root/* ./
-          - rmdir squashfs-root
-      - type: script
-        dest-filename: esologs.sh
-        commands:
-          - export TMPDIR=$XDG_RUNTIME_DIR/app/$FLATPAK_ID
-          - exec zypak-wrapper /app/extra/esologs "$@"
       - type: file
         path: com.esologs.Esologs.desktop
       - type: file
         path: com.esologs.Esologs.png
-    modules:
-      - ./shared-modules/fuse/fuse2.json
-      - ./shared-modules/unappimage/unappimage.json
+      - type: script
+        dest-filename: esologs.sh
+        commands:
+          - 'esologs --no-sandbox'
