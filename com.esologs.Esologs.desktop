@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=ESO Logs Uploader
+Exec=AppRun --no-sandbox %U
+Terminal=false
+Type=Application
+Icon=esologs
+StartupWMClass=ESO Logs Uploader
+X-AppImage-Version=8.2.2
+Comment=ESO Logs Uploader
+Categories=Utility;
