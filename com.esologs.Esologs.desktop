@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=ESO Logs Uploader
-Exec=esologs.sh
+Exec=esologs.sh %U
 Terminal=false
 Type=Application
 Icon=com.esologs.Esologs

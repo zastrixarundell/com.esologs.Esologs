@@ -45,4 +45,4 @@ modules:
       - type: script
         dest-filename: esologs.sh
         commands:
-          - 'esologs --no-sandbox'
+          - esologs --no-sandbox "$@"
