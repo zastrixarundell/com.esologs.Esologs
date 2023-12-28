@@ -11,23 +11,14 @@ finish-args:
   - --share=network
   - --socket=x11
   - --socket=wayland
-cleanup:
-  - /include
-  - /lib/pkgconfig
-  - /share/man
-  - '*.a'
-  - '*.la'
 modules:
   - name: esologs
     buildsystem: simple
     build-commands: 
       - chmod +x esologs.appimage
-      - ./esologs.appimage --appimage-extract &> /dev/null
-      - rm -rf esologs.appimage
-
-      - mkdir -p ${FLATPAK_DEST}/bin
-      - cp -r squashfs-root/* ${FLATPAK_DEST}/bin/
-      # - chmod 4755 ${FLATPAK_DEST}/bin/chrome-sandbox
+      - ./esologs.appimage --appimage-extract
+      - mkdir -p           ${FLATPAK_DEST}/bin
+      - mv squashfs-root/* ${FLATPAK_DEST}/bin
     sources:
       - type: file
         url: https://github.com/RPGLogs/Uploaders-esologs/releases/download/v8.2.2/esologs-v8.2.2.AppImage
