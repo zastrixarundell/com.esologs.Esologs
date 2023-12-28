@@ -4,6 +4,7 @@ runtime-version: '23.08'
 sdk: org.freedesktop.Sdk
 command: esologs.sh
 finish-args:
+  - --device=dri
   - --share=ipc
   - --share=network
   - --socket=x11
