@@ -5,6 +5,8 @@ sdk: org.freedesktop.Sdk
 command: esologs.sh
 finish-args:
   - --device=dri
+  - --socket=session-bus
+  - --talk-name=org.kde.KWallet
   - --share=ipc
   - --share=network
   - --socket=x11
