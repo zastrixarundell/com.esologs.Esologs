@@ -17,8 +17,15 @@ modules:
     build-commands: 
       - chmod +x esologs.appimage
       - ./esologs.appimage --appimage-extract
-      - mkdir -p           ${FLATPAK_DEST}/bin
-      - mv squashfs-root/* ${FLATPAK_DEST}/bin
+      - sed -i 's/AppRun/esologs/g'                  squashfs-root/esologs.desktop
+      - install -Dm555 squashfs-root/esologs.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
+      - install -Dm555 esologs.sh                    ${FLATPAK_DEST}/bin/esologs.sh
+      - mv squashfs-root/usr/share/icons/*           ${FLATPAK_DEST}/share/icons
+      # Cleanup for files which won't be used anymore
+      - rm squashfs-root/esologs.desktop
+      - rm -rf squashfs-root/usr/share/icons
+      - mkdir -p                                     ${FLATPAK_DEST}/bin
+      - mv squashfs-root/*                           ${FLATPAK_DEST}/bin
     sources:
       - type: file
         url: https://github.com/RPGLogs/Uploaders-esologs/releases/download/v8.2.2/esologs-v8.2.2.AppImage
@@ -29,17 +36,6 @@ modules:
           type: html
           url: https://www.esologs.com/client/download/
           pattern: (https:\/\/github\.com\/RPGLogs\/Uploaders-esologs\/releases\/download\/(v[\d.]*)\/esologs-v[\d.]*AppImage)
-  - name: metainfo
-    buildsystem: simple
-    build-commands:
-      - install -Dm755 esologs.sh                 ${FLATPAK_DEST}/bin/esologs.sh
-      - install -Dm644 ${FLATPAK_ID}.png          ${FLATPAK_DEST}/share/icons/hicolor/256x256/apps/${FLATPAK_ID}.png
-      - install -Dm644 ${FLATPAK_ID}.desktop      ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
-    sources:
-      - type: file
-        path: com.esologs.Esologs.desktop
-      - type: file
-        path: com.esologs.Esologs.png
       - type: script
         dest-filename: esologs.sh
         commands:
