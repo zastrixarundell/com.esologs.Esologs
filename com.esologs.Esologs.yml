@@ -25,6 +25,10 @@ modules:
         sha256: 487d5c67562de9e9df8cd0383234a74adb709b39a6149e229d38e027ef94a18d
         size: 100165950
         dest-filename: esologs.appimage
+        x-checker-data:
+          type: html
+          url: https://www.esologs.com/client/download/
+          pattern: (https:\/\/github\.com\/RPGLogs\/Uploaders-esologs\/releases\/download\/(v[\d.]*)\/esologs-v[\d.]*AppImage)
   - name: metainfo
     buildsystem: simple
     build-commands:
