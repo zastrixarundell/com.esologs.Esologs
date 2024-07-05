@@ -17,20 +17,26 @@ modules:
     build-commands: 
       - chmod +x esologs.appimage
       - ./esologs.appimage --appimage-extract
-      - sed -i 's/AppRun/esologs/g'                  squashfs-root/esologs.desktop
-      - install -Dm555 squashfs-root/esologs.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
-      - install -Dm555 esologs.sh                    ${FLATPAK_DEST}/bin/esologs.sh
-      - mv squashfs-root/usr/share/icons/*           ${FLATPAK_DEST}/share/icons
+      # Override some default configs from the desktop file
+      - sed -i 's/AppRun/esologs/g'                        squashfs-root/esologs.desktop
+      - sed -i 's/Icon=esologs/Icon=com.esologs.Esologs/g' squashfs-root/esologs.desktop
+      - install -Dm555 squashfs-root/esologs.desktop       ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
+      - install -Dm555 esologs.sh                          ${FLATPAK_DEST}/bin/esologs.sh
+      # Making sure that the icon works
+      - mkdir -p                                           ${FLATPAK_DEST}/share/icons/hicolor/512x512
+      - install -Dm444 \
+          squashfs-root/usr/share/icons/hicolor/0x0/apps/esologs.png \
+          ${FLATPAK_DEST}/share/icons/hicolor/512x512/apps/com.esologs.Esologs.png
       # Cleanup for files which won't be used anymore
       - rm squashfs-root/esologs.desktop
-      - rm -rf squashfs-root/usr/share/icons
+      - rm -r squashfs-root/usr/share/icons
       - mkdir -p                                     ${FLATPAK_DEST}/bin
       - mv squashfs-root/*                           ${FLATPAK_DEST}/bin
     sources:
       - type: file
-        url: https://github.com/RPGLogs/Uploaders-esologs/releases/download/v8.2.2/esologs-v8.2.2.AppImage
-        sha256: 487d5c67562de9e9df8cd0383234a74adb709b39a6149e229d38e027ef94a18d
-        size: 100165950
+        url: https://github.com/RPGLogs/Uploaders-esologs/releases/download/v8.5.25/esologs-v8.5.25.AppImage
+        sha256: 0d3d526bd58c6266b9210d2c51bdb14d0e83b9fb8aae68a1b41e0584b5931db5
+        size: 100924232
         dest-filename: esologs.appimage
         x-checker-data:
           type: html
